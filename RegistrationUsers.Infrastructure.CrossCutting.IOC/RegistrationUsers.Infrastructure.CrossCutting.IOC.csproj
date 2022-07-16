@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RegistrationUsers.Application\RegistrationUsers.Application.csproj" />
+    <ProjectReference Include="..\RegistrationUsers.Domain.Services\RegistrationUsers.Domain.Services.csproj" />
+    <ProjectReference Include="..\RegistrationUsers.Infrastructure.Repository\RegistrationUsers.Infrastructure.Repository.csproj" />
+  </ItemGroup>
+
+</Project>
