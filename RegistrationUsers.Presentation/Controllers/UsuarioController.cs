@@ -25,7 +25,10 @@ namespace RegistrationUsers.Presentation.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return Ok(_applicationServiceUsuario.GetById(id));
+            var usuario = _applicationServiceUsuario.GetById(id);
+            if(usuario is null)
+                return NotFound("Usuário não encontrado!");
+            return Ok(usuario);
         }
 
         // POST api/values
@@ -45,8 +48,6 @@ namespace RegistrationUsers.Presentation.Controllers
 
                 throw ex;
             }
-
-
         }
 
         // PUT api/values/5
@@ -56,10 +57,12 @@ namespace RegistrationUsers.Presentation.Controllers
             try
             {
                 if (usuarioDto == null)
-                    return NotFound();
+                    return BadRequest("Usuário inválido!");                               
 
-                _applicationServiceUsuario.Update(usuarioDto);
-                return Ok("Usuário Atualizado com sucesso!");
+                if (_applicationServiceUsuario.Update(usuarioDto))
+                    return Ok("Usuário Atualizado com sucesso!");
+
+                return BadRequest("Usuário não encontrado");
             }
             catch (Exception)
             {
@@ -69,16 +72,18 @@ namespace RegistrationUsers.Presentation.Controllers
         }
 
         // DELETE api/values/5
-        [HttpDelete()]
-        public ActionResult Delete([FromBody] UsuarioDto usuarioDto)
+        [HttpDelete("{id:int}")]
+        public ActionResult Delete(int id)
         {
             try
             {
-                if (usuarioDto == null)
+                if (id <= 0)
                     return NotFound();
 
-                _applicationServiceUsuario.Remove(usuarioDto);
-                return Ok("Usuário Removido com sucesso!");
+                if(_applicationServiceUsuario.Remove(id))
+                    return Ok("Usuário Removido com sucesso!");
+
+                return BadRequest("Usuário não encontrado!");
             }
             catch (Exception ex)
             {

@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RegistrationUsers.Application\RegistrationUsers.Application.csproj" />
     <ProjectReference Include="..\RegistrationUsers.Domain.Services\RegistrationUsers.Domain.Services.csproj" />
+    <ProjectReference Include="..\RegistrationUsers.Infrastructure.CrossCutting.Adapter\RegistrationUsers.Infrastructure.CrossCutting.Adapter.csproj" />
     <ProjectReference Include="..\RegistrationUsers.Infrastructure.Repository\RegistrationUsers.Infrastructure.Repository.csproj" />
   </ItemGroup>
 

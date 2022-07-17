@@ -6,13 +6,13 @@ namespace RegistrationUsers.Application.Interfaces
     {
         void Add(UsuarioDto obj);
 
-        UsuarioDto GetById(int id);
+        UsuarioDto? GetById(int id);
 
         IEnumerable<UsuarioDto> GetAll();
 
-        void Update(UsuarioDto obj);
+        bool Update(UsuarioDto obj);
 
-        void Remove(UsuarioDto obj);
+        bool Remove(int id);
 
         void Dispose();
     }

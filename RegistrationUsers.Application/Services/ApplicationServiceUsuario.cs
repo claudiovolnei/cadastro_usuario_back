@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using RegistrationUsers.Application.Dto;
+﻿using RegistrationUsers.Application.Dto;
+using RegistrationUsers.Application.Interface;
 using RegistrationUsers.Application.Interfaces;
 using RegistrationUsers.Domain.Core.Interfaces.Services;
 using RegistrationUsers.Domain.Models;
@@ -9,16 +9,17 @@ namespace RegistrationUsers.Application.Services
     public class ApplicationServiceUsuario : IApplicationServiceUsuario
     {
         private readonly IServiceUsuario _serviceUsuario;
-        private readonly IMapper _mapper;
-        public ApplicationServiceUsuario(IServiceUsuario serviceUsuario, IMapper mapper)
+        private readonly IMapperUsuario _mapper;
+        public ApplicationServiceUsuario(IServiceUsuario serviceUsuario, IMapperUsuario mapper)
         {
             _serviceUsuario = serviceUsuario;
             _mapper = mapper;
         }
         public void Add(UsuarioDto obj)
         {
-            var objCliente = _mapper.Map<Usuario>(obj);
-            _serviceUsuario.Add(objCliente);
+            var usuario = new Usuario();
+            _mapper.MapperToEntity(obj, usuario);
+            _serviceUsuario.Add(usuario);
         }
 
         public void Dispose()
@@ -29,25 +30,39 @@ namespace RegistrationUsers.Application.Services
         public IEnumerable<UsuarioDto> GetAll()
         {
             var objProdutos = _serviceUsuario.GetAll();
-            return _mapper.Map<IEnumerable<UsuarioDto>>(objProdutos);
+            return _mapper.MapperToListUsuariosDto(objProdutos);
         }
 
-        public UsuarioDto GetById(int id)
+        public UsuarioDto? GetById(int id)
         {
-            var objcliente = _serviceUsuario.GetById(id);
-            return _mapper.Map<UsuarioDto>(objcliente);
+            var objUsuario = _serviceUsuario.GetById(id);
+            return _mapper.MapperToDto(objUsuario);
         }
 
-        public void Remove(UsuarioDto obj)
+        public bool Remove(int id)
         {
-            var objCliente = _mapper.Map<Usuario>(obj);
-            _serviceUsuario.Remove(objCliente);
+            var objUsuario = _serviceUsuario.GetById(id);
+
+            if (objUsuario != null)
+            {
+                _serviceUsuario.Remove(objUsuario);
+                return true;
+            }
+
+            return false;
         }
 
-        public void Update(UsuarioDto obj)
+        public bool Update(UsuarioDto obj)
         {
-            var objCliente = _mapper.Map<Usuario>(obj);
-            _serviceUsuario.Update(objCliente);
+            var usuario = _serviceUsuario.GetById(obj.Id);
+            if (usuario != null)
+            {
+                _mapper.MapperToEntity(obj, usuario);
+                _serviceUsuario.Update(usuario);
+                return true;
+            }
+
+            return false;
         }
     }
 }

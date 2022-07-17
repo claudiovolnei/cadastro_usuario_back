@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegistrationUsers.Domain.Core.Interfaces.Repositorys;
+using RegistrationUsers.Domain.Models;
 using RegistrationUsers.Infrastructure.Data;
 
 namespace RegistrationUsers.Infrastructure.Repository.Respositorys
 {
-    public abstract class RepositoryBase<TEntity> : IDisposable, IRepositoryBase<TEntity> where TEntity : class
+    public abstract class RepositoryBase<TEntity> : IDisposable, IRepositoryBase<TEntity> where TEntity : Base
     {
         private readonly RegistrationUserDBContext _context;
 
@@ -35,25 +36,21 @@ namespace RegistrationUsers.Infrastructure.Repository.Respositorys
 
         public virtual IEnumerable<TEntity> GetAll()
         {
-            return _context.Set<TEntity>().ToList();
+            return _context.Set<TEntity>().AsNoTracking().ToList();
         }
 
         public virtual void Update(TEntity obj)
         {
-
             try
-            {
-                _context.Entry(obj).State = EntityState.Modified;
+            {                          
+                _context.Entry<TEntity>(obj).State = EntityState.Modified;
                 _context.SaveChanges();
 
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
-
         }
 
         public virtual void Delete(TEntity obj)
@@ -65,11 +62,8 @@ namespace RegistrationUsers.Infrastructure.Repository.Respositorys
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
-
         }
 
         public virtual void Dispose()
