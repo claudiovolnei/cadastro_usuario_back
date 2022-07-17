@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using RegistrationUsers.Application.Interface;
 using RegistrationUsers.Application.Interfaces;
+using RegistrationUsers.Application.Mappers;
 using RegistrationUsers.Application.Services;
 using RegistrationUsers.Domain.Core.Interfaces.Repositorys;
 using RegistrationUsers.Domain.Core.Interfaces.Services;
@@ -24,6 +26,10 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.IOC
 
             #region IOC Repositorys SQL
             services.AddScoped<IRepositoryUsuario,RepositoryUsuario>();            
+            #endregion
+
+            #region IOC Mapper
+             services.AddScoped<IMapperUsuario, MapperUsuario>();            
             #endregion
 
             #endregion
