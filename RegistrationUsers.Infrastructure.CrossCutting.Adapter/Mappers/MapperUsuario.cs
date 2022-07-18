@@ -1,8 +1,8 @@
 ﻿using RegistrationUsers.Application.Dto;
-using RegistrationUsers.Application.Interface;
 using RegistrationUsers.Domain.Models;
+using RegistrationUsers.Infrastructure.CrossCutting.Adapter.Interface;
 
-namespace RegistrationUsers.Application.Mappers
+namespace RegistrationUsers.Infrastructure.CrossCutting.Adapter.Mappers
 {
     public class MapperUsuario : IMapperUsuario
     {
@@ -22,7 +22,7 @@ namespace RegistrationUsers.Application.Mappers
 
         public void MapperToEntity(UsuarioDto usuarioDto, Usuario usuario)
         {
-            usuario.Id = usuarioDto.Id;
+            usuario.Id = usuarioDto.Id.Value;
             usuario.Nome = usuarioDto.Nome;
             usuario.DataNascimento = usuarioDto.DataNascimento;
             usuario.Email = usuarioDto.Email;

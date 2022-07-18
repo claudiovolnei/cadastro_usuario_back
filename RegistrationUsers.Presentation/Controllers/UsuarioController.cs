@@ -16,6 +16,8 @@ namespace RegistrationUsers.Presentation.Controllers
 
         // GET api/values
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UsuarioDto>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<string>> Get()
         {
             return Ok(_applicationServiceUsuario.GetAll());
@@ -23,6 +25,8 @@ namespace RegistrationUsers.Presentation.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UsuarioDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<string> Get(int id)
         {
             var usuario = _applicationServiceUsuario.GetById(id);
@@ -33,6 +37,8 @@ namespace RegistrationUsers.Presentation.Controllers
 
         // POST api/values
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult Post([FromBody] UsuarioDto usuarioDto)
         {
             try
@@ -52,6 +58,8 @@ namespace RegistrationUsers.Presentation.Controllers
 
         // PUT api/values/5
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult Put([FromBody] UsuarioDto usuarioDto)
         {
             try
@@ -73,6 +81,9 @@ namespace RegistrationUsers.Presentation.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult Delete(int id)
         {
             try

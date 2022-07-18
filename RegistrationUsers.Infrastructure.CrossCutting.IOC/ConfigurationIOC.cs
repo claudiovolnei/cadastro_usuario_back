@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RegistrationUsers.Application.Interface;
 using RegistrationUsers.Application.Interfaces;
-using RegistrationUsers.Application.Mappers;
 using RegistrationUsers.Application.Services;
 using RegistrationUsers.Domain.Core.Interfaces.Repositorys;
 using RegistrationUsers.Domain.Core.Interfaces.Services;
 using RegistrationUsers.Domain.Services.Services;
+using RegistrationUsers.Infrastructure.CrossCutting.Adapter.Interface;
+using RegistrationUsers.Infrastructure.CrossCutting.Adapter.Mappers;
 using RegistrationUsers.Infrastructure.Repository.Respositorys;
 
 namespace RegistrationUsers.Infrastructure.CrossCutting.IOC
@@ -18,18 +18,22 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.IOC
 
             #region IOC Application
             services.AddScoped<IApplicationServiceUsuario,ApplicationServiceUsuario>();
+            services.AddScoped<IApplicationServiceEscolaridade,ApplicationServiceEscolaridade>();
             #endregion
 
             #region IOC Services
             services.AddScoped<IServiceUsuario,ServiceUsuario>();
+            services.AddScoped<IServiceEscolaridade,ServiceEscolaridade>();
             #endregion
 
             #region IOC Repositorys SQL
             services.AddScoped<IRepositoryUsuario,RepositoryUsuario>();            
+            services.AddScoped<IRepositoryEscolaridade,RepositoryEscolaridade>();            
             #endregion
 
             #region IOC Mapper
              services.AddScoped<IMapperUsuario, MapperUsuario>();            
+             services.AddScoped<IMapperEscolaridade, MapperEscolaridade>();            
             #endregion
 
             #endregion

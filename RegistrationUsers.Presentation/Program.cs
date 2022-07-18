@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using RegistrationUsers.Application.Mappers;
+﻿using Microsoft.EntityFrameworkCore;
 using RegistrationUsers.Infrastructure.CrossCutting.IOC;
 using RegistrationUsers.Infrastructure.Data;
 
@@ -18,12 +16,15 @@ ConfigurationIOC.RegisterServices(builder.Services);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddSwaggerGen(gen =>
 {
     gen.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Cadastro de Usuários", Version = "v1.0" });
 });
 
 var app = builder.Build();
+
+app.UseCors(options => options.AllowAnyOrigin());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

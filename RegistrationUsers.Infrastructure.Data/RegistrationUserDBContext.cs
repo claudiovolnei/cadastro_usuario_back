@@ -20,6 +20,7 @@ namespace RegistrationUsers.Infrastructure.Data
             base.OnConfiguring(optionsBuilder);
 
             optionsBuilder.EnableSensitiveDataLogging();
+            
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -66,6 +67,29 @@ namespace RegistrationUsers.Infrastructure.Data
                   .IsUnicode(false);
 
             });
+            modelBuilder.Entity<Escolaridade>()
+                .HasData(
+                    new Escolaridade
+                    {
+                        Id = 1,
+                        Descricao = "Ensino Infantil"
+                    },
+                    new Escolaridade
+                    {
+                        Id = 2,
+                        Descricao = "Ensino Fundamental"
+                    },
+                    new Escolaridade
+                    {
+                        Id = 3,
+                        Descricao = "Ensino Médio"
+                    },
+                    new Escolaridade
+                    {
+                        Id = 4,
+                        Descricao = "Ensino Superior"
+                    }
+                );
             modelBuilder.Entity<HistoricoEscolar>(entity =>
             {
                 entity.ToTable("HistoricoEscolar");
@@ -87,6 +111,7 @@ namespace RegistrationUsers.Infrastructure.Data
                   .HasMaxLength(int.MaxValue)
                   .IsUnicode(false);
             });
+            
         }
         public override int SaveChanges()
         {

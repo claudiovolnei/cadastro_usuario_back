@@ -1,7 +1,7 @@
 using RegistrationUsers.Application.Dto;
 using RegistrationUsers.Domain.Models;
 
-namespace RegistrationUsers.Application.Interface
+namespace RegistrationUsers.Infrastructure.CrossCutting.Adapter.Interface
 {
    public interface IMapperUsuario
    {

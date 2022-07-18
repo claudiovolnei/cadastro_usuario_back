@@ -1,8 +1,8 @@
 ﻿using RegistrationUsers.Application.Dto;
-using RegistrationUsers.Application.Interface;
 using RegistrationUsers.Application.Interfaces;
 using RegistrationUsers.Domain.Core.Interfaces.Services;
 using RegistrationUsers.Domain.Models;
+using RegistrationUsers.Infrastructure.CrossCutting.Adapter.Interface;
 
 namespace RegistrationUsers.Application.Services
 {
@@ -29,13 +29,16 @@ namespace RegistrationUsers.Application.Services
 
         public IEnumerable<UsuarioDto> GetAll()
         {
-            var objProdutos = _serviceUsuario.GetAll();
-            return _mapper.MapperToListUsuariosDto(objProdutos);
+            var objUsuarios = _serviceUsuario.GetAll();
+            return _mapper.MapperToListUsuariosDto(objUsuarios);
         }
 
         public UsuarioDto? GetById(int id)
         {
             var objUsuario = _serviceUsuario.GetById(id);
+            if (objUsuario is null)
+                return null;
+
             return _mapper.MapperToDto(objUsuario);
         }
 
@@ -54,7 +57,7 @@ namespace RegistrationUsers.Application.Services
 
         public bool Update(UsuarioDto obj)
         {
-            var usuario = _serviceUsuario.GetById(obj.Id);
+            var usuario = _serviceUsuario.GetById(obj.Id.Value);
             if (usuario != null)
             {
                 _mapper.MapperToEntity(obj, usuario);
