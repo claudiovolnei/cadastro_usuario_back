@@ -1,13 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegistrationUsers.Infrastructure.CrossCutting.IOC;
 using RegistrationUsers.Infrastructure.Data;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RegistrationUserDBContext>(options =>
                     options.UseSqlite(builder.Configuration.GetConnectionString("RegistrationUsersDB"), migration => migration.MigrationsAssembly("RegistrationUsers.Presentation")));
 // Add services to the container.
-
+var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddControllers();
+
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 //Injection
 ConfigurationIOC.RegisterServices(builder.Services);
@@ -24,7 +32,7 @@ builder.Services.AddSwaggerGen(gen =>
 
 var app = builder.Build();
 
-app.UseCors(options => options.AllowAnyOrigin());
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

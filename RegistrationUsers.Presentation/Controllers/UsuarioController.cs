@@ -9,9 +9,11 @@ namespace RegistrationUsers.Presentation.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IApplicationServiceUsuario _applicationServiceUsuario;
-        public UsuarioController(IApplicationServiceUsuario applicationServiceUsuario)
+        private readonly ILogger _logger;
+        public UsuarioController(IApplicationServiceUsuario applicationServiceUsuario, ILogger logger)
         {
-            _applicationServiceUsuario = applicationServiceUsuario; 
+            _applicationServiceUsuario = applicationServiceUsuario;
+            _logger = logger;
         }
 
         // GET api/values
@@ -51,7 +53,7 @@ namespace RegistrationUsers.Presentation.Controllers
             }
             catch (Exception ex)
             {
-
+                _logger.LogError(ex.Message);
                 throw ex;
             }
         }
@@ -74,7 +76,7 @@ namespace RegistrationUsers.Presentation.Controllers
             }
             catch (Exception)
             {
-
+                _logger.LogError(ex.Message);
                 throw;
             }
         }
@@ -98,7 +100,7 @@ namespace RegistrationUsers.Presentation.Controllers
             }
             catch (Exception ex)
             {
-
+                _logger.LogError(ex.Message);
                 throw ex;
             }
 

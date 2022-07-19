@@ -22,7 +22,7 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.Adapter.Mappers
 
         public void MapperToEntity(UsuarioDto usuarioDto, Usuario usuario)
         {
-            usuario.Id = usuarioDto.Id.Value;
+            usuario.Id = usuarioDto.Id == null ? 0 : usuarioDto.Id.Value;
             usuario.Nome = usuarioDto.Nome;
             usuario.DataNascimento = usuarioDto.DataNascimento;
             usuario.Email = usuarioDto.Email;

@@ -24,16 +24,19 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.IOC
             #region IOC Services
             services.AddScoped<IServiceUsuario,ServiceUsuario>();
             services.AddScoped<IServiceEscolaridade,ServiceEscolaridade>();
+            services.AddScoped<IServiceHistoricoEscolar, ServiceHistoricoEscolar>();
             #endregion
 
             #region IOC Repositorys SQL
             services.AddScoped<IRepositoryUsuario,RepositoryUsuario>();            
             services.AddScoped<IRepositoryEscolaridade,RepositoryEscolaridade>();            
+            services.AddScoped<IRepositoryHistoricoEscolar, RepositoryHistoricoEscolar>();            
             #endregion
 
             #region IOC Mapper
              services.AddScoped<IMapperUsuario, MapperUsuario>();            
              services.AddScoped<IMapperEscolaridade, MapperEscolaridade>();            
+             services.AddScoped<IMapperHistoricoEscolar, MapperHistoricoEscolar>();            
             #endregion
 
             #endregion
