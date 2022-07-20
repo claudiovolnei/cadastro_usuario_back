@@ -17,12 +17,24 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.Adapter.Mappers
             };
         }
 
-        public void MapperToEntity(HistoricoEscolarDto historicoEscolarDto, HistoricoEscolar historicoEscolar)
+        public HistoricoEscolar MapperToEntity(HistoricoEscolarDto historicoEscolarDto)
         {
-            historicoEscolar.Id = historicoEscolarDto.Id == null? 0 : historicoEscolarDto.Id.Value,
+            return new HistoricoEscolar
+            {
+                Id = historicoEscolarDto.Id == null ? 0 : historicoEscolarDto.Id.Value,
+                Nome = historicoEscolarDto.Nome,
+                Formato = historicoEscolarDto.Formato,
+                Caminho = historicoEscolarDto.Caminho,
+            };
+        }
+        
+        public void MapperToEntity(HistoricoEscolarDto historicoEscolarDto, ref HistoricoEscolar historicoEscolar)
+        {
+            historicoEscolar.Id = historicoEscolarDto.Id == null ? 0 : historicoEscolarDto.Id.Value;
             historicoEscolar.Nome = historicoEscolarDto.Nome;
             historicoEscolar.Formato = historicoEscolarDto.Formato;
             historicoEscolar.Caminho = historicoEscolarDto.Caminho;
+
         }
     }
 }

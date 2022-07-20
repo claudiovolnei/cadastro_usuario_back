@@ -14,12 +14,13 @@ namespace RegistrationUsers.Infrastructure.Repository.Respositorys
             _context = Context;
         }
 
-        public virtual void Add(TEntity obj)
+        public async virtual Task<TEntity>Add(TEntity obj)
         {
             try
             {
-                _context.Set<TEntity>().Add(obj);
-                _context.SaveChanges();
+                await _context.Set<TEntity>().AddAsync(obj);
+                await _context.SaveChangesAsync();
+                return obj;
 
             }
             catch (Exception ex)
@@ -29,22 +30,23 @@ namespace RegistrationUsers.Infrastructure.Repository.Respositorys
             }
         }
 
-        public virtual TEntity GetById(int id)
+        public async virtual Task<TEntity> GetById(int id)
         {
-            return _context.Set<TEntity>().Find(id);
+            return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        public virtual IEnumerable<TEntity> GetAll()
+        public async virtual Task<IEnumerable<TEntity>> GetAll()
         {
-            return _context.Set<TEntity>().AsNoTracking().ToList();
+            return await _context.Set<TEntity>().AsNoTracking().ToListAsync();
         }
 
-        public virtual void Update(TEntity obj)
+        public async virtual Task<TEntity> Update(TEntity obj)
         {
             try
             {                          
                 _context.Entry<TEntity>(obj).State = EntityState.Modified;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
+                return obj;
 
             }
             catch (Exception ex)
@@ -53,12 +55,12 @@ namespace RegistrationUsers.Infrastructure.Repository.Respositorys
             }
         }
 
-        public virtual void Delete(TEntity obj)
+        public async virtual Task Delete(TEntity obj)
         {
             try
             {
                 _context.Set<TEntity>().Remove(obj);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {

@@ -19,6 +19,7 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.IOC
             #region IOC Application
             services.AddScoped<IApplicationServiceUsuario,ApplicationServiceUsuario>();
             services.AddScoped<IApplicationServiceEscolaridade,ApplicationServiceEscolaridade>();
+            services.AddScoped<IApplicationServiceHistoricoEscolar, ApplicationServiceHistoricoEscolar>();
             #endregion
 
             #region IOC Services

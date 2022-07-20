@@ -1,107 +1,110 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RegistrationUsers.Application.Dto;
+using RegistrationUsers.Application.Dto.Validators;
 using RegistrationUsers.Application.Interfaces;
+using System.Net;
 
 namespace RegistrationUsers.Presentation.Controllers
 {
     [Route("[controller]")]
-    [ApiController]
     public class UsuarioController : ControllerBase
     {
         private readonly IApplicationServiceUsuario _applicationServiceUsuario;
         private readonly ILogger _logger;
-        public UsuarioController(IApplicationServiceUsuario applicationServiceUsuario, ILogger logger)
+        public UsuarioController(IApplicationServiceUsuario applicationServiceUsuario)
         {
             _applicationServiceUsuario = applicationServiceUsuario;
-            _logger = logger;
+            
         }
 
         // GET api/values
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UsuarioDto>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<string>> Get()
+        [ProducesResponseType(typeof(IEnumerable<UsuarioDto>), 200)]
+        public async Task<IActionResult> Get()
         {
-            return Ok(_applicationServiceUsuario.GetAll());
+            var usuarios = await _applicationServiceUsuario.GetAll();
+            return Ok(usuarios);
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UsuarioDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<string> Get(int id)
+        [ProducesResponseType(typeof(UsuarioDto), 200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetById(int id)
         {
-            var usuario = _applicationServiceUsuario.GetById(id);
-            if(usuario is null)
-                return NotFound("Usuário não encontrado!");
-            return Ok(usuario);
+            var usuario = await _applicationServiceUsuario.GetById(id);
+            if(usuario != null)
+                return Ok(usuario);
+
+            return NotFound("Usuário não encontrado.");
         }
 
         // POST api/values
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult Post([FromBody] UsuarioDto usuarioDto)
+        [ProducesResponseType(404)]
+        [ProducesResponseType(203)]
+        public async Task<IActionResult> Post([FromForm] UsuarioDto usuarioDto)
         {
             try
             {
-                if (usuarioDto == null)
-                    return NotFound();
+                if(!this.ModelState.IsValid)
+                    return BadRequest(this.ModelState.ReturnErrosModel());              
 
-                _applicationServiceUsuario.Add(usuarioDto);
-                return Ok("Usuário Cadastrado com sucesso!");
+                var usuario = await _applicationServiceUsuario.Add(usuarioDto);
+                return Created(nameof(GetById), new { usuario.Id });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw ex;
+                this.ModelState.AddModelError("message",ex.Message);
+                return BadRequest(this.ModelState.ReturnErrosModel());
             }
         }
 
         // PUT api/values/5
         [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult Put([FromBody] UsuarioDto usuarioDto)
+        [ProducesResponseType(500)]
+        [ProducesResponseType(203)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Put([FromBody] UsuarioDto usuarioDto)
         {
             try
             {
-                if (usuarioDto == null)
-                    return BadRequest("Usuário inválido!");                               
+                if (!this.ModelState.IsValid)
+                    return BadRequest(this.ModelState.ReturnErrosModel());
 
-                if (_applicationServiceUsuario.Update(usuarioDto))
+                if (await _applicationServiceUsuario.Update(usuarioDto))
                     return Ok("Usuário Atualizado com sucesso!");
 
-                return BadRequest("Usuário não encontrado");
+                return NotFound("Usuário não encontrado");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw;
+                this.ModelState.AddModelError("message", ex.Message);
+                return BadRequest(this.ModelState.ReturnErrosModel());
             }
         }
 
         // DELETE api/values/5
         [HttpDelete("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult Delete(int id)
+        [ProducesResponseType(500)]
+        [ProducesResponseType(203)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 if (id <= 0)
-                    return NotFound();
+                    return BadRequest();
 
-                if(_applicationServiceUsuario.Remove(id))
+                if(await _applicationServiceUsuario.Remove(id))
                     return Ok("Usuário Removido com sucesso!");
 
-                return BadRequest("Usuário não encontrado!");
+                return NotFound("Usuário não encontrado!");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                throw ex;
+                this.ModelState.AddModelError("message", ex.Message);
+                return BadRequest(this.ModelState.ReturnErrosModel());
             }
 
         }

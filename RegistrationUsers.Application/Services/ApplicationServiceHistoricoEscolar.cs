@@ -1,7 +1,8 @@
-﻿using RegistrationUsers.Application.Dto.Dto;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using RegistrationUsers.Application.Dto.Dto;
 using RegistrationUsers.Application.Interfaces;
 using RegistrationUsers.Domain.Core.Interfaces.Services;
-using RegistrationUsers.Domain.Models;
 using RegistrationUsers.Infrastructure.CrossCutting.Adapter.Interface;
 
 namespace RegistrationUsers.Application.Services
@@ -11,17 +12,29 @@ namespace RegistrationUsers.Application.Services
     {
         private readonly IServiceHistoricoEscolar _serviceHistoricoEscolar;
         private readonly IMapperHistoricoEscolar _mapper;
-        public ApplicationServiceHistoricoEscolar(IServiceHistoricoEscolar serviceHistoricoEscolar, IMapperHistoricoEscolar mapper)
+        private readonly IConfiguration _configuration;
+        public ApplicationServiceHistoricoEscolar(IServiceHistoricoEscolar serviceHistoricoEscolar, IMapperHistoricoEscolar mapper, IConfiguration configuration)
         {
             _serviceHistoricoEscolar = serviceHistoricoEscolar;
             _mapper = mapper;
+            _configuration = configuration;
         }
 
-        public void Add(HistoricoEscolarDto obj)
+        public async Task<HistoricoEscolarDto> Add(IFormFile file)
         {
-            var historicoEscolar = new HistoricoEscolar();
-            _mapper.MapperToEntity(obj, historicoEscolar);
-            _serviceHistoricoEscolar.Add(historicoEscolar);
+            var caminho = await UploadFile(file);
+
+            if (caminho == null)
+                throw new Exception("Erro ao armazenar histórico.");
+
+            var historicoEscolarDto = new HistoricoEscolarDto
+            {
+                Nome = file.FileName,
+                Formato = file.ContentType,
+                Caminho = caminho
+            };
+            var historicoEscolar = await _serviceHistoricoEscolar.Add(_mapper.MapperToEntity(historicoEscolarDto));            
+            return _mapper.MapperToDto(historicoEscolar);
         }
 
         public void Dispose()
@@ -29,39 +42,69 @@ namespace RegistrationUsers.Application.Services
             _serviceHistoricoEscolar.Dispose();
         }
 
-        public HistoricoEscolarDto? GetById(int id)
+        public async Task<HistoricoEscolarDto> GetById(int id)
         {
-            var objHistoricoEscolar = _serviceHistoricoEscolar.GetById(id);
-            if (objHistoricoEscolar is null)
-                return null;
+            var objHistoricoEscolar = await _serviceHistoricoEscolar.GetById(id);
 
             return _mapper.MapperToDto(objHistoricoEscolar);
         }
 
-        public bool Remove(int id)
+        public async Task<bool> Remove(int id)
         {
-            var objHistoricoEscolar = _serviceHistoricoEscolar.GetById(id);
+            var objHistoricoEscolar = await _serviceHistoricoEscolar.GetById(id);
 
             if (objHistoricoEscolar != null)
             {
-                _serviceHistoricoEscolar.Remove(objHistoricoEscolar);
+                await _serviceHistoricoEscolar.Remove(objHistoricoEscolar);
                 return true;
             }
 
             return false;
         }
 
-        public bool Update(HistoricoEscolarDto obj)
+        public async Task<bool> Update(HistoricoEscolarDto obj)
         {
-            var historicoEscolar = _serviceHistoricoEscolar.GetById(obj.Id.Value);
+            var historicoEscolar = await _serviceHistoricoEscolar.GetById(obj.Id.Value);
             if (historicoEscolar != null)
             {
-                _mapper.MapperToEntity(obj, historicoEscolar);
-                _serviceHistoricoEscolar.Update(historicoEscolar);
+                _mapper.MapperToEntity(obj, ref historicoEscolar);
+                await _serviceHistoricoEscolar.Update(historicoEscolar);
                 return true;
             }
 
             return false;
+        }
+
+        private async Task<string> UploadFile(IFormFile file)
+        {
+            var guid = Guid.NewGuid();
+            var pathUpload = _configuration["PathFiles:Path"];
+            if (pathUpload == null)
+                return null;
+
+            try
+            {
+                if (file.Length > 0)
+                {
+                    if (!Directory.Exists(pathUpload))
+                    {
+                        Directory.CreateDirectory(pathUpload);
+                    }
+                    using (var fileStream = new FileStream(Path.Combine(pathUpload, guid  + file.FileName), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                    return pathUpload + guid  + file.FileName;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("File Copy Failed", ex);
+            }
         }
     }
 }

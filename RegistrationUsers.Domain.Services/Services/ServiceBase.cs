@@ -10,25 +10,28 @@ namespace RegistrationUsers.Domain.Services.Services
         {
             _repository = repository;
         }
-        public virtual void Add(TEntity obj)
+        public async virtual Task<TEntity> Add(TEntity obj)
         {
-            _repository.Add(obj);
+            await _repository.Add(obj);
+            return obj;
         }
-        public virtual TEntity GetById(int id)
+        public async virtual Task<TEntity> GetById(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetById(id);
         }
-        public virtual IEnumerable<TEntity> GetAll()
+        public async virtual Task<IEnumerable<TEntity>> GetAll()
         {
-            return _repository.GetAll();
+            return await _repository.GetAll();
         }
-        public virtual void Update(TEntity obj)
+        public async virtual Task<TEntity> Update(TEntity obj)
         {
-            _repository.Update(obj);
+            await _repository.Update(obj);
+            return obj;
+
         }
-        public virtual void Remove(TEntity obj)
+        public async virtual Task Remove(TEntity obj)
         {
-            _repository.Delete(obj);
+            await _repository.Delete(obj);
         }
 
         public virtual void Dispose()

@@ -2,15 +2,15 @@
 {
     public interface IServiceBase<TEntity> where TEntity : class 
     {
-        void Add(TEntity obj);
+        Task<TEntity> Add(TEntity obj);
 
-        void Update(TEntity obj);
+        Task<TEntity> Update(TEntity obj);
 
-        void Remove(TEntity obj);
+        Task Remove(TEntity obj);
 
-        IEnumerable<TEntity> GetAll();
+        Task<IEnumerable<TEntity>> GetAll();
 
-        TEntity GetById(int id);
+        Task<TEntity> GetById(int id);
         void Dispose();
     }
 }

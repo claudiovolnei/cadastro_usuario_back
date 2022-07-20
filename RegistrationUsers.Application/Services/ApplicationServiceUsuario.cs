@@ -1,7 +1,7 @@
-﻿using RegistrationUsers.Application.Dto;
+﻿using Microsoft.AspNetCore.Http;
+using RegistrationUsers.Application.Dto;
 using RegistrationUsers.Application.Interfaces;
 using RegistrationUsers.Domain.Core.Interfaces.Services;
-using RegistrationUsers.Domain.Models;
 using RegistrationUsers.Infrastructure.CrossCutting.Adapter.Interface;
 
 namespace RegistrationUsers.Application.Services
@@ -9,17 +9,24 @@ namespace RegistrationUsers.Application.Services
     public class ApplicationServiceUsuario : IApplicationServiceUsuario
     {
         private readonly IServiceUsuario _serviceUsuario;
+        private readonly IApplicationServiceHistoricoEscolar _aplicationServiceHistoricoEscolar;
         private readonly IMapperUsuario _mapper;
-        public ApplicationServiceUsuario(IServiceUsuario serviceUsuario, IMapperUsuario mapper)
+        public ApplicationServiceUsuario(IServiceUsuario serviceUsuario, IMapperUsuario mapper, IApplicationServiceHistoricoEscolar aplicationServiceHistoricoEscolar)
         {
             _serviceUsuario = serviceUsuario;
             _mapper = mapper;
+            _aplicationServiceHistoricoEscolar = aplicationServiceHistoricoEscolar;
         }
-        public void Add(UsuarioDto obj)
+        public async Task<UsuarioDto> Add(UsuarioDto obj)
         {
-            var usuario = new Usuario();
-            _mapper.MapperToEntity(obj, usuario);
-            _serviceUsuario.Add(usuario);
+            var historicoEscolar = await _aplicationServiceHistoricoEscolar.Add(obj.file);
+            if (!historicoEscolar.Id.HasValue)
+                throw new Exception("Problemas ao salvar histórico.");
+
+            obj.HistoricoEscolarId = historicoEscolar.Id.Value;
+            var usuario = _mapper.MapperToEntity(obj);
+            usuario = await _serviceUsuario.Add(usuario);
+            return _mapper.MapperToDto(usuario);
         }
 
         public void Dispose()
@@ -27,45 +34,44 @@ namespace RegistrationUsers.Application.Services
             _serviceUsuario.Dispose();
         }
 
-        public IEnumerable<UsuarioDto> GetAll()
+        public async Task<IEnumerable<UsuarioDto>> GetAll()
         {
-            var objUsuarios = _serviceUsuario.GetAll();
+            var objUsuarios = await _serviceUsuario.GetAll();
             return _mapper.MapperToListUsuariosDto(objUsuarios);
         }
 
-        public UsuarioDto? GetById(int id)
+        public async Task<UsuarioDto>? GetById(int id)
         {
-            var objUsuario = _serviceUsuario.GetById(id);
-            if (objUsuario is null)
-                return null;
-
+            var objUsuario = await _serviceUsuario.GetById(id);
             return _mapper.MapperToDto(objUsuario);
         }
 
-        public bool Remove(int id)
+        public async Task<bool> Remove(int id)
         {
-            var objUsuario = _serviceUsuario.GetById(id);
+            var objUsuario = await _serviceUsuario.GetById(id);
 
             if (objUsuario != null)
             {
-                _serviceUsuario.Remove(objUsuario);
+                await _serviceUsuario.Remove(objUsuario);
                 return true;
             }
 
             return false;
         }
 
-        public bool Update(UsuarioDto obj)
+        public async Task<bool> Update(UsuarioDto obj)
         {
-            var usuario = _serviceUsuario.GetById(obj.Id.Value);
+            var usuario = await _serviceUsuario.GetById(obj.Id.Value);
             if (usuario != null)
             {
-                _mapper.MapperToEntity(obj, usuario);
-                _serviceUsuario.Update(usuario);
+                _mapper.MapperToEntity(obj, ref usuario);
+                await _serviceUsuario.Update(usuario);
                 return true;
             }
 
             return false;
         }
+
+        
     }
 }

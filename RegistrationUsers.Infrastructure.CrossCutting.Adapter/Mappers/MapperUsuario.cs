@@ -20,7 +20,7 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.Adapter.Mappers
             };
         }
 
-        public void MapperToEntity(UsuarioDto usuarioDto, Usuario usuario)
+        public void MapperToEntity(UsuarioDto usuarioDto, ref Usuario usuario)
         {
             usuario.Id = usuarioDto.Id == null ? 0 : usuarioDto.Id.Value;
             usuario.Nome = usuarioDto.Nome;
@@ -29,6 +29,20 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.Adapter.Mappers
             usuario.EscolaridadeId = usuarioDto.EscolaridadeId;
             usuario.HistoricoEscolarId = usuarioDto.HistoricoEscolarId;
             usuario.Sobrenome = usuarioDto.Sobrenome;            
+        }
+
+        public Usuario MapperToEntity(UsuarioDto usuarioDto)
+        {
+            return new Usuario
+            {
+                Id = usuarioDto.Id == null ? 0 : usuarioDto.Id.Value,
+                Nome = usuarioDto.Nome,
+                DataNascimento = usuarioDto.DataNascimento,
+                Email = usuarioDto.Email,
+                EscolaridadeId = usuarioDto.EscolaridadeId,
+                HistoricoEscolarId = usuarioDto.HistoricoEscolarId,
+                Sobrenome = usuarioDto.Sobrenome
+            };
         }
 
         public IEnumerable<UsuarioDto> MapperToListUsuariosDto(IEnumerable<Usuario> usuarios)

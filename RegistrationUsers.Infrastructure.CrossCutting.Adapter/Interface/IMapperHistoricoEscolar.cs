@@ -5,7 +5,8 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.Adapter.Interface
 {
     public interface IMapperHistoricoEscolar
     {
-        void MapperToEntity(HistoricoEscolarDto historicoEscolarDto, HistoricoEscolar historicoEscolar);
+        HistoricoEscolar MapperToEntity(HistoricoEscolarDto historicoEscolarDto);
         HistoricoEscolarDto MapperToDto(HistoricoEscolar historicoEscolar);
+        void MapperToEntity(HistoricoEscolarDto historicoEscolarDto, ref HistoricoEscolar historicoEscolar);
     }
 }

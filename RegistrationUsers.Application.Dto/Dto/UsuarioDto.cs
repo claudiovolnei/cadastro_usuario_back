@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace RegistrationUsers.Application.Dto
 {
-    public record struct UsuarioDto
+    public record class UsuarioDto
     {
         public int? Id { get; set; }
         [Required(ErrorMessage = "Nome é obrigatório.")]
@@ -15,6 +16,8 @@ namespace RegistrationUsers.Application.Dto
         public DateTime DataNascimento { get; set; }
         public int EscolaridadeId { get; set; }
         public int HistoricoEscolarId { get; set; }
+        [Required(ErrorMessage = "Histórico escolar deve ser anexado")]
+        public IFormFile file { get; set; }
     }
 
     public class CheckBirthDate : ValidationAttribute

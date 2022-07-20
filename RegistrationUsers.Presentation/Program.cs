@@ -7,14 +7,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RegistrationUserDBContext>(options =>
                     options.UseSqlite(builder.Configuration.GetConnectionString("RegistrationUsersDB"), migration => migration.MigrationsAssembly("RegistrationUsers.Presentation")));
 // Add services to the container.
-var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 builder.Services.AddControllers();
 
+builder.Logging.ClearProviders();
 var logger = new LoggerConfiguration()
   .ReadFrom.Configuration(builder.Configuration)
   .Enrich.FromLogContext()
   .CreateLogger();
-builder.Logging.ClearProviders();
+
 builder.Logging.AddSerilog(logger);
 
 //Injection

@@ -1,0 +1,36 @@
+CPF Teste = 613.991.750-68
+CPF Teste Stefani = 025.918.970-77
+
+Proposta  = SPW002729
+
+----------- Teste Declaração Finame------------
+Proposta CDC: DFM021405
+Concessionaria: SR. JOÃO GABRIEL NOGUEIRA
+
+Proposta Finame: PAM042896
+Concessionaria: DAVI LUCAS COSTA - ALICIA PEREIRA
+
+Teste Liberação de botões:
+	- SPM037192
+	
+	
+Reunião Impressão de Contrato
+- AFO
+
+- Verificar quando o contrato tiver cancelado botão de assinatura contrato(desabilitado) 
+
+
+SPM037225
+
+
+IF EXISTS (SELECT * FROM sys.objects  WHERE type = 'P' AND  name = 'spr_digit_ler_campa_incen_geren_tipo_veic')
+	DROP PROCEDURE dbo.spr_digit_ler_campa_incen_geren_tipo_veic
+GO
+
+Proposta SPM037840/ Contrato 1190440474
+
+ /api/v3/proposals/complement/{dealershipId}/{proposalId}
+
+CPF = 316.370.230-90
+CNPJ = 76.508.122/0001-55
+CNPJ = 26.906.529/0001-62 / PRJ

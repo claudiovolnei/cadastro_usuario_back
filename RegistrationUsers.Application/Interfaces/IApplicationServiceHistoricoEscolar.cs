@@ -1,16 +1,17 @@
-﻿using RegistrationUsers.Application.Dto.Dto;
+﻿using Microsoft.AspNetCore.Http;
+using RegistrationUsers.Application.Dto.Dto;
 
 namespace RegistrationUsers.Application.Interfaces
 {
     public interface IApplicationServiceHistoricoEscolar
     {
-        void Add(HistoricoEscolarDto obj);
+        Task<HistoricoEscolarDto> Add(IFormFile file);
 
-        HistoricoEscolarDto? GetById(int id);
+        Task<HistoricoEscolarDto>? GetById(int id);
 
-        bool Update(HistoricoEscolarDto obj);
+        Task<bool> Update(HistoricoEscolarDto obj);
 
-        bool Remove(int id);
+        Task<bool> Remove(int id);
 
         void Dispose();
     }

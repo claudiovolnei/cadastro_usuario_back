@@ -19,9 +19,9 @@ namespace RegistrationUsers.Application.Services
             _serviceEscolaridade.Dispose();
         }
 
-        public IEnumerable<EscolaridadeDto> GetAll()
+        public async Task<IEnumerable<EscolaridadeDto>> GetAll()
         {
-            var escolaridades = _serviceEscolaridade.GetAll();
+            var escolaridades = await _serviceEscolaridade.GetAll();
             return _mapper.MapperToListEscolaridadeDto(escolaridades);
         }
     }

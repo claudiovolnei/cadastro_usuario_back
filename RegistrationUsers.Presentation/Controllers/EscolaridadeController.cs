@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RegistrationUsers.Application.Dto;
+using Microsoft.AspNetCore.Http;
 using RegistrationUsers.Application.Dto.Dto;
 using RegistrationUsers.Application.Interfaces;
 
 namespace RegistrationUsers.Presentation.Controllers
 {
     [Route("[controller]")]
-    [ApiController]
     public class EscolaridadeController : ControllerBase
     {
         private readonly IApplicationServiceEscolaridade _applicationServiceEscolaridade;
@@ -17,11 +16,11 @@ namespace RegistrationUsers.Presentation.Controllers
 
         // GET api/values
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<EscolaridadeDto>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<EscolaridadeDto>> Get()
+        [ProducesResponseType(typeof(IEnumerable<HistoricoEscolarDto>),200)]        
+        public async Task<IActionResult> Get()
         {
-            return Ok(_applicationServiceEscolaridade.GetAll());
+            var escolaridades = await _applicationServiceEscolaridade.GetAll();
+            return Ok(escolaridades);
         }
     }
 }

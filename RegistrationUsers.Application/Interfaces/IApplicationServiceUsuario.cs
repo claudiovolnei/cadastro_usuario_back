@@ -1,18 +1,19 @@
-﻿using RegistrationUsers.Application.Dto;
+﻿using Microsoft.AspNetCore.Http;
+using RegistrationUsers.Application.Dto;
 
 namespace RegistrationUsers.Application.Interfaces
 {
     public interface IApplicationServiceUsuario
     {
-        void Add(UsuarioDto obj);
+        Task<UsuarioDto> Add(UsuarioDto obj);
 
-        UsuarioDto? GetById(int id);
+        Task<UsuarioDto>? GetById(int id);
 
-        IEnumerable<UsuarioDto> GetAll();
+        Task<IEnumerable<UsuarioDto>> GetAll();
 
-        bool Update(UsuarioDto obj);
+        Task<bool> Update(UsuarioDto obj);
 
-        bool Remove(int id);
+        Task<bool> Remove(int id);
 
         void Dispose();
     }
