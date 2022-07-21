@@ -11,29 +11,34 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.0 - Domain", "3.0 - Domai
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.0 - Infrastructure", "4.0 - Infrastructure", "{2F9E6F81-0C62-44E1-B6BA-F793A7425694}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationUsers.Domain", "RegistrationUsers.Domain\RegistrationUsers.Domain.csproj", "{FCA208CF-DCDF-4303-96F7-B66F705BDB8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationUsers.Domain", "RegistrationUsers.Domain\RegistrationUsers.Domain.csproj", "{FCA208CF-DCDF-4303-96F7-B66F705BDB8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationUsers.Domain.Core", "RegistrationUsers.DomainCore\RegistrationUsers.Domain.Core.csproj", "{ECF49CEB-8345-4CC9-8AE9-3A25F044AE51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationUsers.Domain.Core", "RegistrationUsers.DomainCore\RegistrationUsers.Domain.Core.csproj", "{ECF49CEB-8345-4CC9-8AE9-3A25F044AE51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationUsers.Domain.Services", "RegistrationUsers.Domain.Services\RegistrationUsers.Domain.Services.csproj", "{32DE9BA9-4BB6-40FF-A670-B10DBBD92C80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationUsers.Domain.Services", "RegistrationUsers.Domain.Services\RegistrationUsers.Domain.Services.csproj", "{32DE9BA9-4BB6-40FF-A670-B10DBBD92C80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationUsers.Application.Dto", "RegistrationUsers.Application.Dto\RegistrationUsers.Application.Dto.csproj", "{51F3299F-1AED-4138-BBD1-004F23CED465}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationUsers.Application.Dto", "RegistrationUsers.Application.Dto\RegistrationUsers.Application.Dto.csproj", "{51F3299F-1AED-4138-BBD1-004F23CED465}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationUsers.Application", "RegistrationUsers.Application\RegistrationUsers.Application.csproj", "{7F714EC5-7564-4FC5-AE5A-72E7E0F2D68C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationUsers.Application", "RegistrationUsers.Application\RegistrationUsers.Application.csproj", "{7F714EC5-7564-4FC5-AE5A-72E7E0F2D68C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1 - Data", "4.1 - Data", "{BB7C4BDA-44B6-4AC4-9E6C-C73AEAC4A282}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationUsers.Infrastructure.Data", "RegistrationUsers.Infrastructure.Data\RegistrationUsers.Infrastructure.Data.csproj", "{0F9E0C8A-61B3-4B30-A924-18C358BC18CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationUsers.Infrastructure.Data", "RegistrationUsers.Infrastructure.Data\RegistrationUsers.Infrastructure.Data.csproj", "{0F9E0C8A-61B3-4B30-A924-18C358BC18CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationUsers.Infrastructure.Repository", "RegistrationUsers.Infrastructure.Repository\RegistrationUsers.Infrastructure.Repository.csproj", "{2D07D96F-D32B-4DC9-983D-688D10C3F3B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationUsers.Infrastructure.Repository", "RegistrationUsers.Infrastructure.Repository\RegistrationUsers.Infrastructure.Repository.csproj", "{2D07D96F-D32B-4DC9-983D-688D10C3F3B1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2 - CrossCutting", "4.2 - CrossCutting", "{A847A463-7A1D-4613-B227-978DB6F1CACB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationUsers.Infrastructure.CrossCutting.Adapter", "RegistrationUsers.Infrastructure.CrossCutting.Adapter\RegistrationUsers.Infrastructure.CrossCutting.Adapter.csproj", "{9DD9E9D2-CD72-4769-B22F-2849FFB36EBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationUsers.Infrastructure.CrossCutting.Adapter", "RegistrationUsers.Infrastructure.CrossCutting.Adapter\RegistrationUsers.Infrastructure.CrossCutting.Adapter.csproj", "{9DD9E9D2-CD72-4769-B22F-2849FFB36EBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationUsers.Infrastructure.CrossCutting.IOC", "RegistrationUsers.Infrastructure.CrossCutting.IOC\RegistrationUsers.Infrastructure.CrossCutting.IOC.csproj", "{2C39682E-4CEE-4B6E-A048-30C257BAE929}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationUsers.Infrastructure.CrossCutting.IOC", "RegistrationUsers.Infrastructure.CrossCutting.IOC\RegistrationUsers.Infrastructure.CrossCutting.IOC.csproj", "{2C39682E-4CEE-4B6E-A048-30C257BAE929}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationUsers.Presentation", "RegistrationUsers.Presentation\RegistrationUsers.Presentation.csproj", "{9AE4B440-49D9-4C51-9EB7-BAC331E2AD3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationUsers.Presentation", "RegistrationUsers.Presentation\RegistrationUsers.Presentation.csproj", "{9AE4B440-49D9-4C51-9EB7-BAC331E2AD3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2896A180-8921-4B00-A6EB-EA06BADC1875}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
