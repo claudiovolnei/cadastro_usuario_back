@@ -17,27 +17,27 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.IOC
             #region Registra IOC
 
             #region IOC Application
-            services.AddScoped<IApplicationServiceUsuario,ApplicationServiceUsuario>();
-            services.AddScoped<IApplicationServiceEscolaridade,ApplicationServiceEscolaridade>();
-            services.AddScoped<IApplicationServiceHistoricoEscolar, ApplicationServiceHistoricoEscolar>();
+            services.AddScoped<IApplicationServiceUser,ApplicationServiceUser>();
+            services.AddScoped<IApplicationServiceScholarity,ApplicationServiceScholarity>();
+            services.AddScoped<IApplicationServiceSchoolRecords, ApplicationServiceSchoolRecords>();
             #endregion
 
             #region IOC Services
-            services.AddScoped<IServiceUsuario,ServiceUsuario>();
-            services.AddScoped<IServiceEscolaridade,ServiceEscolaridade>();
-            services.AddScoped<IServiceHistoricoEscolar, ServiceHistoricoEscolar>();
+            services.AddScoped<IServiceUser,ServiceUser>();
+            services.AddScoped<IServiceScholarity,ServiceScholarity>();
+            services.AddScoped<IServiceSchoolRecords, ServiceSchoolRecords>();
             #endregion
 
             #region IOC Repositorys SQL
-            services.AddScoped<IRepositoryUsuario,RepositoryUsuario>();            
-            services.AddScoped<IRepositoryEscolaridade,RepositoryEscolaridade>();            
-            services.AddScoped<IRepositoryHistoricoEscolar, RepositoryHistoricoEscolar>();            
+            services.AddScoped<IRepositoryUser,RepositoryUser>();            
+            services.AddScoped<IRepositoryScholarity,RepositoryScholarity>();            
+            services.AddScoped<IRepositorySchoolRecords, RepositorySchoolRecords>();            
             #endregion
 
             #region IOC Mapper
-             services.AddScoped<IMapperUsuario, MapperUsuario>();            
-             services.AddScoped<IMapperEscolaridade, MapperEscolaridade>();            
-             services.AddScoped<IMapperHistoricoEscolar, MapperHistoricoEscolar>();            
+             services.AddScoped<IMapperUser, MapperUser>();            
+             services.AddScoped<IMapperScholarity, MapperScholarity>();            
+             services.AddScoped<IMapperSchoolRecords, MapperSchoolRecords>();            
             #endregion
 
             #endregion

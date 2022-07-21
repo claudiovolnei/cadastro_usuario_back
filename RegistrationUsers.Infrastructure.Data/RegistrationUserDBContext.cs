@@ -12,9 +12,9 @@ namespace RegistrationUsers.Infrastructure.Data
 
         public RegistrationUserDBContext(DbContextOptions<RegistrationUserDBContext> options) : base(options) { }
 
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Escolaridade> Escolaridades { get; set; }
-        public DbSet<HistoricoEscolar> HistoricoEscolares { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Scholarity> Scholaritys { get; set; }
+        public DbSet<SchoolRecords> SchoolRecords { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -24,9 +24,9 @@ namespace RegistrationUsers.Infrastructure.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Usuario>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("Usuario");
+                entity.ToTable("User");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -36,101 +36,101 @@ namespace RegistrationUsers.Infrastructure.Data
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Nome)
-                    .HasColumnName("nome")
+                entity.Property(e => e.Name)
+                    .HasColumnName("name")
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Sobrenome)
-                    .HasColumnName("sobrenome")
+                entity.Property(e => e.Lastname)
+                    .HasColumnName("lastname")
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.DataNascimento)
-                    .HasColumnName("data_nascimento")
+                entity.Property(e => e.BirthDate)
+                    .HasColumnName("birth_date")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.EscolaridadeId).HasColumnName("escolaridade_id");
-                entity.Property(e => e.HistoricoEscolarId).HasColumnName("historico_escolar_id");
+                entity.Property(e => e.ScholarityId).HasColumnName("scholarity_id");
+                entity.Property(e => e.SchoolRecordsId).HasColumnName("school_records_id");
 
 
             });
-            modelBuilder.Entity<Escolaridade>(entity =>
+            modelBuilder.Entity<Scholarity>(entity =>
             {
-                entity.ToTable("Escolaridade");
+                entity.ToTable("Scholarity");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Descricao)
-                  .HasColumnName("descricao")
+                entity.Property(e => e.Description)
+                  .HasColumnName("description")
                   .HasMaxLength(30)
                   .IsUnicode(false);
 
             });
-            modelBuilder.Entity<Escolaridade>()
+            modelBuilder.Entity<Scholarity>()
                 .HasData(
-                    new Escolaridade
+                    new Scholarity
                     {
                         Id = 1,
-                        Descricao = "Ensino Infantil"
+                        Description = "Ensino Infantil"
                     },
-                    new Escolaridade
+                    new Scholarity
                     {
                         Id = 2,
-                        Descricao = "Ensino Fundamental"
+                        Description = "Ensino Fundamental"
                     },
-                    new Escolaridade
+                    new Scholarity
                     {
                         Id = 3,
-                        Descricao = "Ensino Médio"
+                        Description = "Ensino Médio"
                     },
-                    new Escolaridade
+                    new Scholarity
                     {
                         Id = 4,
-                        Descricao = "Ensino Superior"
+                        Description = "Ensino Superior"
                     }
                 );
-            modelBuilder.Entity<HistoricoEscolar>(entity =>
+            modelBuilder.Entity<SchoolRecords>(entity =>
             {
-                entity.ToTable("HistoricoEscolar");
+                entity.ToTable("SchoolRecords");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Nome)
-                  .HasColumnName("nome")
+                entity.Property(e => e.Name)
+                  .HasColumnName("name")
                   .HasMaxLength(30)
                   .IsUnicode(false);
 
-                entity.Property(e => e.Formato)
-                  .HasColumnName("formato")
+                entity.Property(e => e.Format)
+                  .HasColumnName("format")
                   .HasMaxLength(30)
                   .IsUnicode(false);
                 
-                entity.Property(e => e.Caminho)
-                  .HasColumnName("caminho")
+                entity.Property(e => e.Path)
+                  .HasColumnName("path")
                   .HasMaxLength(int.MaxValue)
                   .IsUnicode(false);
             });
             
         }
-        public override int SaveChanges()
+        public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("DataCadastro") != null))
+            foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("RegistrationDate") != null))
             {
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Property("DataCadastro").CurrentValue = DateTime.Now;
+                    entry.Property("RegistrationDate").CurrentValue = DateTime.Now;
                 }
 
                 if (entry.State == EntityState.Modified)
                 {
-                    entry.Property("DataCadastro").IsModified = false;
+                    entry.Property("RegistrationDate").IsModified = false;
                 }
 
 
             }
 
-            return base.SaveChanges();
+            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }
