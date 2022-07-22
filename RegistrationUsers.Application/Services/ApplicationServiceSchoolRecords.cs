@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RegistrationUsers.Application.Dto.Dto;
+using RegistrationUsers.Application.Dto.Types;
 using RegistrationUsers.Application.Interfaces;
 using RegistrationUsers.Domain.Core.Interfaces.Services;
 using RegistrationUsers.Infrastructure.CrossCutting.Adapter.Interface;
@@ -42,38 +43,48 @@ namespace RegistrationUsers.Application.Services
             _serviceSchoolRecords.Dispose();
         }
 
+        public async Task<FileDto> DownloadFile(SchoolRecordsDto schoolRecordsDto)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(schoolRecordsDto.Path))
+                    throw new Exception("Diretório não encontrado.");
+
+                var file = new FileDto();
+
+                var mimeType = (string file) =>
+                {
+                    var mimeTypes = MimeTypes.GetMimeTypes();
+                    var extension = Path.GetExtension(file).ToLowerInvariant();
+                    return mimeTypes[extension];
+                };
+                
+                file.MimeType = mimeType;
+
+                using (var stream = new FileStream(schoolRecordsDto.Path, FileMode.Open))
+                {
+                    await stream.CopyToAsync(file.MemoryStream);
+                    file.Path = schoolRecordsDto.Path;
+                    return file;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            
+        }
+
         public async Task<SchoolRecordsDto> GetById(int id)
         {
             var objSchoolRecords = await _serviceSchoolRecords.GetById(id);
 
             return _mapper.MapperToDto(objSchoolRecords);
         }
-
-        public async Task<bool> Remove(int id)
-        {
-            var objSchoolRecords = await _serviceSchoolRecords.GetById(id);
-
-            if (objSchoolRecords != null)
-            {
-                await _serviceSchoolRecords.Remove(objSchoolRecords);
-                return true;
-            }
-
-            return false;
-        }
-
-        public async Task<bool> Update(SchoolRecordsDto obj)
-        {
-            var schoolRecords = await _serviceSchoolRecords.GetById(obj.Id.Value);
-            if (schoolRecords != null)
-            {
-                _mapper.MapperToEntity(obj, ref schoolRecords);
-                await _serviceSchoolRecords.Update(schoolRecords);
-                return true;
-            }
-
-            return false;
-        }
+        
 
         private async Task<string> UploadFile(IFormFile file)
         {

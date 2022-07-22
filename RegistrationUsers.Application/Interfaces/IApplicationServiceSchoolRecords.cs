@@ -9,9 +9,8 @@ namespace RegistrationUsers.Application.Interfaces
 
         Task<SchoolRecordsDto>? GetById(int id);
 
-        Task<bool> Update(SchoolRecordsDto obj);
+        Task<FileDto> DownloadFile(SchoolRecordsDto schoolRecordsDto);
 
-        Task<bool> Remove(int id);
 
         void Dispose();
     }

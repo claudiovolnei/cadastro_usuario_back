@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using RegistrationUsers.Application.Dto.Dto;
+using RegistrationUsers.Application.Dto.Types;
 using RegistrationUsers.Application.Interfaces;
 using RegistrationUsers.Domain.Core.Interfaces.Services;
 using RegistrationUsers.Infrastructure.CrossCutting.Adapter.Interface;
@@ -67,19 +68,29 @@ namespace RegistrationUsers.Application.Services
 
         public async Task<bool> Update(UserDto obj)
         {
-            var schoolRecords = await SaveSchoolRecords(obj.File);
-            if (schoolRecords == null)
-                throw new Exception("Erro ao salvar arquivo.");
-
-            var User = await _serviceUser.GetUserAsync(obj.Id.Value);
-            if (User != null)
+            try
             {
-                _mapper.MapperToEntity(obj, ref User);
-                await _serviceUser.Update(User);
-                return true;
-            }
+                //if(MimeTypes.GetMimeTypes().Contains(obj.File.ContentType))
+                var schoolRecords = await SaveSchoolRecords(obj.File);
+                if (schoolRecords == null)
+                    throw new Exception("Erro ao salvar arquivo.");
 
-            return false;
+                var User = await _serviceUser.GetUserAsync(obj.Id.Value);
+                if (User != null)
+                {
+                    _mapper.MapperToEntity(obj, ref User);
+                    await _serviceUser.Update(User);
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
         }
 
         private async Task<SchoolRecordsDto> SaveSchoolRecords(IFormFile file)
