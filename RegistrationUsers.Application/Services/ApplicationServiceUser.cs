@@ -20,14 +20,23 @@ namespace RegistrationUsers.Application.Services
         }
         public async Task<UserDto> Add(UserDto obj)
         {
-            var schoolRecords = await SaveSchoolRecords(obj.File);
-            if (schoolRecords == null)
-                throw new Exception("Erro ao salvar arquivo.");
+            try
+            {                
+                var schoolRecords = await SaveSchoolRecords(obj.File);
+                if (schoolRecords == null)
+                    throw new Exception("Erro ao salvar arquivo.");
 
-            obj.SchoolRecords = schoolRecords;
-            var User = _mapper.MapperToEntity(obj);
-            User = await _serviceUser.Add(User);
-            return _mapper.MapperToDto(User);
+                obj.SchoolRecords = schoolRecords;
+                var User = _mapper.MapperToEntity(obj);
+                User = await _serviceUser.Add(User);
+                return _mapper.MapperToDto(User);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         public void Dispose()
@@ -70,7 +79,6 @@ namespace RegistrationUsers.Application.Services
         {
             try
             {
-                //if(MimeTypes.GetMimeTypes().Contains(obj.File.ContentType))
                 var schoolRecords = await SaveSchoolRecords(obj.File);
                 if (schoolRecords == null)
                     throw new Exception("Erro ao salvar arquivo.");
@@ -95,8 +103,13 @@ namespace RegistrationUsers.Application.Services
 
         private async Task<SchoolRecordsDto> SaveSchoolRecords(IFormFile file)
         {
-           return await _aplicationServiceSchoolRecords.Add(file);
+            if (!MimeTypes.GetMimeTypes().Values.Contains(file.ContentType))
+                throw new Exception($"Formato de arquivo inválido, somente {MimeTypes.GetMimeTypes().Keys} ");
+
+            return await _aplicationServiceSchoolRecords.Add(file);
         }
+
+       
 
         
     }

@@ -25,7 +25,7 @@ ConfigurationIOC.RegisterServices(builder.Services);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+builder.WebHost.UseUrls("http://localhost:5005");
 builder.Services.AddSwaggerGen(gen =>
 {
     gen.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Cadastro de Usuários", Version = "v1.0" });
