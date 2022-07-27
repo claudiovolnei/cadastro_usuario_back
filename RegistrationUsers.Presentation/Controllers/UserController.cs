@@ -63,7 +63,7 @@ namespace RegistrationUsers.Presentation.Controllers
         // PUT api/values/5
         [HttpPut]
         [ProducesResponseType(500)]
-        [ProducesResponseType(203)]
+        [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Put([FromBody] UserDto userDto)
         {
@@ -72,7 +72,9 @@ namespace RegistrationUsers.Presentation.Controllers
                 if (!this.ModelState.IsValid)
                     return BadRequest(this.ModelState.ReturnErrosModel());
 
-                if (await _applicationServiceUser.Update(userDto))
+                bool response = await _applicationServiceUser.Update(userDto);
+
+                if (response)
                     return Ok("Usuário Atualizado com sucesso!");
 
                 return NotFound("Usuário não encontrado");
@@ -87,7 +89,7 @@ namespace RegistrationUsers.Presentation.Controllers
         // DELETE api/values/5
         [HttpDelete("{id:int}")]
         [ProducesResponseType(500)]
-        [ProducesResponseType(203)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(int id)
         {
@@ -96,7 +98,9 @@ namespace RegistrationUsers.Presentation.Controllers
                 if (id <= 0)
                     return BadRequest();
 
-                if(await _applicationServiceUser.Remove(id))
+                bool response = await _applicationServiceUser.Remove(id);
+
+                if (response)
                     return Ok("Usuário Removido com sucesso!");
 
                 return NotFound("Usuário não encontrado!");

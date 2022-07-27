@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
-using Microsoft.AspNetCore.StaticFiles;
+﻿using Microsoft.AspNetCore.Mvc;
 using RegistrationUsers.Application.Dto.Dto;
 using RegistrationUsers.Domain.Models;
 using RegistrationUsers.Infrastructure.CrossCutting.Adapter.Interface;
-using System.Text;
 
 namespace RegistrationUsers.Infrastructure.CrossCutting.Adapter.Mappers
 {
@@ -61,47 +58,43 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.Adapter.Mappers
             };
         }
 
-        public async Task<IEnumerable<UserDto>> MapperToListUserDto(IEnumerable<User> users)
+        public IEnumerable<UserDto> MapperToListUserDto(IEnumerable<User> users)
         {
-            var userList = new List<UserDto>();
+            var userDtoList = new List<UserDto>();
 
             foreach (var user in users)
             {
-                var userEntity = new UserDto
+                var userDto = new UserDto
                 {
                     Id = user.Id,
                     Name = user.Name,
                     BirthDate = user.BirthDate,
-                    Email = user.Email,
-                    File = ConvertFile(user.SchoolRecords),
+                    Email = user.Email,                    
                     ScholarityId = String.IsNullOrEmpty(user.ScholarityId.ToString()) ? String.Empty : user.ScholarityId.ToString(),
                     Scholarity = user.Scholarity == null ? null : _mapperScholarity.MapperToDto(user.Scholarity),
                     SchoolRecordsId = user.SchoolRecordsId,
                     SchoolRecords = user.SchoolRecords == null ? null : _mapperSchoolRecords.MapperToDto(user.SchoolRecords),
                     Lastname = user.Lastname
-                };                
-
-                userList.Add(userEntity);
-            }
-
-            return userList;
-        }
-
-        private IFormFile ConvertFile(SchoolRecords schoolRecords)
-        {
-            if (schoolRecords == null)
-                return null;
-
-            using (var stream = File.OpenRead(schoolRecords.Path))
-            {
-                FormFile file = new FormFile(stream, 0, stream.Length, null, schoolRecords.Name)
-                {
-                    Headers = new HeaderDictionary(),
-                    ContentType = schoolRecords.Format
                 };
 
-                return file;
+                if(userDto.SchoolRecords != null)
+                    userDto.Blob = ConvertFile(user.SchoolRecords);
+
+                userDtoList.Add(userDto);
             }
+
+            return userDtoList;
+        }
+
+        private byte[] ConvertFile(SchoolRecords schoolRecords)
+        {
+            FileStream fs = new FileStream(schoolRecords.Path, FileMode.Open, FileAccess.Read);
+
+            //The reader reads the binary data from the file stream  
+            BinaryReader reader = new BinaryReader(fs);
+
+            //Bytes from the binary reader stored in BlobValue array  
+            return  reader.ReadBytes((int)fs.Length);
         }
     }
 }

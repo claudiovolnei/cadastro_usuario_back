@@ -47,14 +47,13 @@ namespace RegistrationUsers.Application.Services
         public async Task<IEnumerable<UserDto>> GetAll()
         {
             var objUsers = await _serviceUser.GetAll();
-            return await _mapper.MapperToListUserDto(objUsers);
+            return _mapper.MapperToListUserDto(objUsers);
         }
 
         public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
-            var objUsers = await _serviceUser.GetAllAsync();
-            var usersDto = await _mapper.MapperToListUserDto(objUsers);
-            return usersDto;
+            var objUsers = await _serviceUser.GetAllAsync();             
+            return _mapper.MapperToListUserDto(objUsers);
         }
 
         public async Task<UserDto>? GetById(int id)

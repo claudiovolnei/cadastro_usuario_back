@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace RegistrationUsers.Application.Dto.Dto
@@ -21,6 +22,7 @@ namespace RegistrationUsers.Application.Dto.Dto
         public int? SchoolRecordsId { get; set; }
         [Required(ErrorMessage = "Histórico escolar deve ser anexado")]
         public IFormFile File { get; set; }
+        public byte[] Blob { get; set; }
     }
 
     public class CheckBirthDate : ValidationAttribute

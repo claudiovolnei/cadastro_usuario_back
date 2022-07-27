@@ -8,7 +8,7 @@ namespace RegistrationUsers.Infrastructure.CrossCutting.Adapter.Interface
         void MapperToEntity(UserDto userDto, ref User user);
         User MapperToEntity(UserDto userDto);
         UserDto MapperToDto(User user);
-        Task<IEnumerable<UserDto>> MapperToListUserDto(IEnumerable<User> users);
+        IEnumerable<UserDto> MapperToListUserDto(IEnumerable<User> users);
    } 
 }
     
