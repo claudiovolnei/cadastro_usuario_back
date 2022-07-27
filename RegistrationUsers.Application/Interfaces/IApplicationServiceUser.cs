@@ -11,6 +11,7 @@ namespace RegistrationUsers.Application.Interfaces
         Task<UserDto> GetUserAsync(int id);
 
         Task<IEnumerable<UserDto>> GetAll();
+        Task<IEnumerable<UserDto>> GetAllAsync();
 
         Task<bool> Update(UserDto obj);
 

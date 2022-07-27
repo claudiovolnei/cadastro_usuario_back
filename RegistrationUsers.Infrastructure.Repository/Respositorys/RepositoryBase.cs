@@ -21,11 +21,9 @@ namespace RegistrationUsers.Infrastructure.Repository.Respositorys
                 await _context.Set<TEntity>().AddAsync(obj);
                 await _context.SaveChangesAsync();
                 return obj;
-
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
@@ -47,7 +45,6 @@ namespace RegistrationUsers.Infrastructure.Repository.Respositorys
                 _context.Entry<TEntity>(obj).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
                 return obj;
-
             }
             catch (Exception ex)
             {

@@ -13,6 +13,15 @@ namespace RegistrationUsers.Infrastructure.Repository.Respositorys
             _context = context; 
         }
 
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            var users = await _context.Users
+                        .Include(e => e.Scholarity)
+                        .Include(h => h.SchoolRecords)
+                        .ToListAsync();
+            return users;
+        }
+
         public async Task<User> GetUserAsync(int id)
         {
             var user = await _context.Users.Where(u => u.Id == id)

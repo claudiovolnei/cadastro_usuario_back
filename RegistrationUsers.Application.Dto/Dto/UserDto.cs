@@ -16,8 +16,9 @@ namespace RegistrationUsers.Application.Dto.Dto
         public DateTime BirthDate { get; set; }
         [Required(ErrorMessage = "Escolaridade obrigatório.")]
         public string ScholarityId { get; set; }
-        public ScholarityDto Scholarity { get; set; }
-        public SchoolRecordsDto SchoolRecords { get; set; }
+        public ScholarityDto? Scholarity { get; set; }
+        public SchoolRecordsDto? SchoolRecords { get; set; }
+        public int? SchoolRecordsId { get; set; }
         [Required(ErrorMessage = "Histórico escolar deve ser anexado")]
         public IFormFile File { get; set; }
     }

@@ -22,7 +22,7 @@ namespace RegistrationUsers.Presentation.Controllers
         [ProducesResponseType(typeof(IEnumerable<UserDto>), 200)]
         public async Task<IActionResult> Get()
         {
-            var users = await _applicationServiceUser.GetAll();
+            var users = await _applicationServiceUser.GetAllAsync();
             return Ok(users);
         }
 

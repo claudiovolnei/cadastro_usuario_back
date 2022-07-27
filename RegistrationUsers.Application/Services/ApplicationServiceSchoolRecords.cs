@@ -43,41 +43,6 @@ namespace RegistrationUsers.Application.Services
             _serviceSchoolRecords.Dispose();
         }
 
-        public async Task<FileDto> DownloadFile(SchoolRecordsDto schoolRecordsDto)
-        {
-            try
-            {
-                if (String.IsNullOrEmpty(schoolRecordsDto.Path))
-                    throw new Exception("Diretório não encontrado.");
-
-                var file = new FileDto();
-
-                var mimeType = (string file) =>
-                {
-                    var mimeTypes = MimeTypes.GetMimeTypes();
-                    var extension = Path.GetExtension(file).ToLowerInvariant();
-                    return mimeTypes[extension];
-                };
-                
-                file.MimeType = mimeType;
-
-                using (var stream = new FileStream(schoolRecordsDto.Path, FileMode.Open))
-                {
-                    await stream.CopyToAsync(file.MemoryStream);
-                    file.Path = schoolRecordsDto.Path;
-                    return file;
-                }
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            
-        }
-
         public async Task<SchoolRecordsDto> GetById(int id)
         {
             var objSchoolRecords = await _serviceSchoolRecords.GetById(id);
@@ -101,11 +66,11 @@ namespace RegistrationUsers.Application.Services
                     {
                         Directory.CreateDirectory(pathUpload);
                     }
-                    using (var fileStream = new FileStream(Path.Combine(pathUpload, guid  + file.FileName), FileMode.Create))
+                    using (var fileStream = new FileStream(Path.Combine(pathUpload, guid  + "_" + file.FileName), FileMode.Create))
                     {
                         await file.CopyToAsync(fileStream);
                     }
-                    return pathUpload + guid  + file.FileName;
+                    return pathUpload + guid + "_" + file.FileName;
                 }
                 else
                 {

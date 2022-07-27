@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
+using RegistrationUsers.Application.Dto.Dto;
 using RegistrationUsers.Application.Dto.Validators;
 using RegistrationUsers.Application.Interfaces;
 
@@ -15,17 +17,44 @@ namespace RegistrationUsers.Presentation.Controllers
             _applicationServiceSchoolRecords = applicationServiceSchoolRecords;
         }
 
+        [HttpPost]
+        [Route("file")]
+        public async Task<IActionResult> FormFile([FromBody] SchoolRecordsDto schoolRecordsDto)
+        {
+            try
+            {
+                if (schoolRecordsDto == null)
+                    return BadRequest("Problemas ao retornar arquivo.");
+
+                var fileName = System.IO.Path.GetFileName(schoolRecordsDto.Path);
+                var content = await System.IO.File.ReadAllBytesAsync(schoolRecordsDto.Path);
+                new FileExtensionContentTypeProvider()
+                    .TryGetContentType(fileName, out string contentType);
+                return File(content, contentType, fileName);
+
+            }
+            catch (Exception ex)
+            {
+                this.ModelState.AddModelError("message", ex.Message);
+                return BadRequest(this.ModelState.ReturnErrosModel());
+            }
+        }
+
         // GET api/values
         [HttpGet("{id}")]
         public async Task<IActionResult> DownloadFile(int id)
         {
             try
             {
-                var user = await _applicationServiceUser.GetById(id);
-                if (user != null && user.SchoolRecords != null)
+                var schoolRecords = await _applicationServiceSchoolRecords.GetById(id);
+                if (schoolRecords != null)
                 {
-                    var file = await _applicationServiceSchoolRecords.DownloadFile(user.SchoolRecords);
-                    return File(file.MemoryStream, file.MimeType(file.Path), Path.GetFileName(file.Path));
+                    var fileName = System.IO.Path.GetFileName(schoolRecords.Path);
+                    var content = await System.IO.File.ReadAllBytesAsync(schoolRecords.Path);
+                    new FileExtensionContentTypeProvider()
+                        .TryGetContentType(fileName, out string contentType);
+                    return File(content, contentType, fileName);
+                    
                 }
 
                 return BadRequest("Arquivo não encontrado.");
@@ -37,6 +66,8 @@ namespace RegistrationUsers.Presentation.Controllers
                 return BadRequest(this.ModelState.ReturnErrosModel());
             }
         }
+
+        
         
     }
 }

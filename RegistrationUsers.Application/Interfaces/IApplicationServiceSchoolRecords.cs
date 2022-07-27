@@ -9,9 +9,6 @@ namespace RegistrationUsers.Application.Interfaces
 
         Task<SchoolRecordsDto>? GetById(int id);
 
-        Task<FileDto> DownloadFile(SchoolRecordsDto schoolRecordsDto);
-
-
         void Dispose();
     }
 }

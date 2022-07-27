@@ -11,5 +11,10 @@
                 {".pdf", "application/pdf"}
             };
         }
+
+        public static string PrintMimeTypes()
+        {
+            return String.Join(", ", GetMimeTypes().Select(kvp =>  kvp.Key + " |"));
+        }
     }
 }

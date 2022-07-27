@@ -26,10 +26,10 @@ namespace RegistrationUsers.Application.Services
                 if (schoolRecords == null)
                     throw new Exception("Erro ao salvar arquivo.");
 
-                obj.SchoolRecords = schoolRecords;
-                var User = _mapper.MapperToEntity(obj);
-                User = await _serviceUser.Add(User);
-                return _mapper.MapperToDto(User);
+                obj.SchoolRecordsId = schoolRecords.Id.Value;
+                var user = _mapper.MapperToEntity(obj);
+                user = await _serviceUser.Add(user);
+                return _mapper.MapperToDto(user);
             }
             catch (Exception)
             {
@@ -47,7 +47,14 @@ namespace RegistrationUsers.Application.Services
         public async Task<IEnumerable<UserDto>> GetAll()
         {
             var objUsers = await _serviceUser.GetAll();
-            return _mapper.MapperToListUserDto(objUsers);
+            return await _mapper.MapperToListUserDto(objUsers);
+        }
+
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
+        {
+            var objUsers = await _serviceUser.GetAllAsync();
+            var usersDto = await _mapper.MapperToListUserDto(objUsers);
+            return usersDto;
         }
 
         public async Task<UserDto>? GetById(int id)
@@ -104,7 +111,7 @@ namespace RegistrationUsers.Application.Services
         private async Task<SchoolRecordsDto> SaveSchoolRecords(IFormFile file)
         {
             if (!MimeTypes.GetMimeTypes().Values.Contains(file.ContentType))
-                throw new Exception($"Formato de arquivo inválido, somente {MimeTypes.GetMimeTypes().Keys} ");
+                throw new Exception($"Formato de arquivo inválido, somente {MimeTypes.PrintMimeTypes()} ");
 
             return await _aplicationServiceSchoolRecords.Add(file);
         }

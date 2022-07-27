@@ -12,6 +12,12 @@ namespace RegistrationUsers.Domain.Services.Services
             _repositoryUser = repositoryUser; 
         }
 
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            var users = await _repositoryUser.GetAllAsync();
+            return users;
+        }
+
         public async Task<User> GetUserAsync(int id)
         {
             var user = await _repositoryUser.GetUserAsync(id);
